@@ -1,13 +1,13 @@
-import { Routes } from '@angular/router';
-import { LayoutComponent } from '../components/layout/layout.component';
-import { AuthGuard } from '../guards/auth.guard';
-import { DashboardComponent } from '../components/dashboard/dashboard.component';
-import { CoursesComponent } from '../components/courses/courses.component';
-import { CourseManagementComponent } from '../components/course-management/course-management.component';
-import { CourseDetailsComponent } from '../components/course-details/course-details.component';
-import { HomeComponent } from '../components/home/home.component';
-import { LessonsComponent } from '../components/lessons/lessons.component';
-import { AuthComponent } from '../components/auth/auth.component';
+import { Routes } from "@angular/router";
+import { AuthComponent } from "./components/auth/auth.component";
+import { CourseDetailsComponent } from "./components/course-details/course-details.component";
+import { CourseManagementComponent } from "./components/course-management/course-management.component";
+import { CoursesComponent } from "./components/courses/courses.component";
+import { DashboardComponent } from "./components/dashboard/dashboard.component";
+import { HomeComponent } from "./components/home/home.component";
+import { LayoutComponent } from "./components/layout/layout.component";
+import { LessonsComponent } from "./components/lessons/lessons.component";
+import { AuthGuard } from "./guards/auth.guard";
 
 export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
