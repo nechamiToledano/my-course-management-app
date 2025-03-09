@@ -1,0 +1,52 @@
+<div class="auth-container">
+    <mat-card class="auth-card">
+      <mat-card-title>{{ title }}</mat-card-title>
+  
+      <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+        <!-- Name Field (Only in Register Mode) -->
+        
+         @if(!isLoginMode)
+
+      { 
+        <mat-form-field class="full-width" >
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" type="text">
+        </mat-form-field>
+    
+    
+        <!-- Role Selection (Only in Register Mode) -->
+        <mat-form-field class="full-width" >
+            <mat-label>Role</mat-label>
+          <mat-select formControlName="role">
+            <mat-option value="admin">Admin</mat-option>
+            <mat-option value="student">Student</mat-option>
+            <mat-option value="teacher">Teacher</mat-option>
+          </mat-select>
+        </mat-form-field>
+    }
+      <!-- Email Field -->
+      <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email">
+      </mat-form-field>
+
+        <!-- Password Field -->
+        <mat-form-field class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" type="password">
+        </mat-form-field>
+  
+        <!-- Submit Button -->
+        <button mat-raised-button color="primary" class="full-width" [disabled]="authForm.invalid">
+          {{ title }}
+        </button>
+  
+        <!-- Toggle Between Login and Register -->
+        <button mat-button color="accent" class="full-width" (click)="toggleMode()" type="button">
+          {{ isLoginMode ? "Don't have an account? Register" : "Already have an account? Login" }}
+        </button>
+      </form>
+    </mat-card>
+    
+  </div>
+  

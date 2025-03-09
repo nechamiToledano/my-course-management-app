@@ -1,0 +1,35 @@
+<mat-toolbar color="primary">
+    <span>{{ courseDetails.title }} - Course Details</span>
+  </mat-toolbar>
+  
+  <div class="course-details">
+    <mat-card class="course-card">
+      <mat-card-header>
+        <mat-card-title>{{ courseDetails.title }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ courseDetails.description }}</p>
+      </mat-card-content>
+    </mat-card>
+  
+    <mat-divider></mat-divider>
+  
+    <h3>Lessons</h3>
+    @for(lesson of lessons;track lesson.id)
+   { <div >
+      <mat-card class="lesson-card">
+        <mat-card-header>
+          <mat-card-title>{{ lesson.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ lesson.content }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button (click)="downloadMaterial(lesson.id)">
+            Download Material
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>}
+  </div>
+  

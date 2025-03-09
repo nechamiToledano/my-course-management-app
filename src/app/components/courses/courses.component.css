@@ -1,0 +1,83 @@
+/* General Page Styling */
+.course-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Styling for Individual Course Cards */
+.course-card {
+    width: 350px;
+    padding: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+    background: white;
+    overflow: hidden;
+}
+
+.course-card:hover {
+    transform: scale(1.03);
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Course Title Button */
+.course-card mat-card-header button {
+    width: 100%;
+    text-align: left;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: none;
+    color: #3f51b5; /* Primary color */
+}
+
+.course-card mat-card-header button:hover {
+    background-color: rgba(63, 81, 181, 0.1);
+}
+
+/* Course Description */
+mat-card-content p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Actions (Buttons) */
+mat-card-actions {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+/* Enroll and Leave Buttons */
+mat-card-actions button {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+mat-card-actions button:first-child {
+    color: #388e3c; /* Green for Enroll */
+}
+
+mat-card-actions button:last-child {
+    color: #d32f2f; /* Red for Leave */
+}
+
+/* No Courses Message */
+.no-courses {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+    margin-top: 20px;
+}
+
+/* Toolbar Styling */
+mat-toolbar {
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
