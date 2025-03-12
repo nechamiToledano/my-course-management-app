@@ -24,20 +24,26 @@ import { Router } from '@angular/router';
 })
 export class CoursesComponent implements OnInit {
   courses: any[] = [];
+  enrolledCourseIds: number[] = [];
   userId: any;
 
   constructor(
     private courseService: CourseService,
     private router: Router,
-    private snackBar: MatSnackBar // ✅ הוספת MatSnackBar
+    private snackBar: MatSnackBar 
   ) {
   }
 
   ngOnInit(): void {
-    
     this.courseService.getCourses().subscribe((data: any[]) => {
       this.courses = data;
     });
+this.userId=localStorage.getItem('userId');
+    // Fetch the courses the user is enrolled in
+    this.courseService.getCoursesByStudentId(this.userId).subscribe((enrolledCourses: any[]) => {
+      this.enrolledCourseIds = enrolledCourses.map(course => course.id);
+    });
+    
   }
 
   courseDetailes(courseId: number): void {
@@ -45,13 +51,39 @@ export class CoursesComponent implements OnInit {
   }
 
   enroll(courseId: number): void {
-      this.showMessage('✅ נרשמת בהצלחה לקורס!');
-    
+    if (this.enrolledCourseIds.includes(courseId)) {
+      this.showMessage('❌ אתה כבר רשום לקורס זה.');
+      return;
+    }
+
+    this.courseService.enrollInCourse(this.userId, courseId).subscribe(
+      () => {
+        this.enrolledCourseIds.push(courseId);
+        this.showMessage('✅ נרשמת בהצלחה לקורס!');
+      },
+      (error) => {
+        this.showMessage('❌ שגיאה בהרשמה לקורס.');
+        console.error('Enrollment failed', error);
+        
+      }
+    );
   }
 
   leave(courseId: number): void {
-    this.showMessage('❌ עזבת את הקורס בהצלחה.');
- 
+    if (!this.enrolledCourseIds.includes(courseId)) {
+      this.showMessage('❌ אינך רשום לקורס זה.');
+      return;
+    }
+    this.courseService.leaveCourse(this.userId, courseId).subscribe(
+      () => {
+        this.enrolledCourseIds = this.enrolledCourseIds.filter(id => id !== courseId);
+        this.showMessage('❌ עזבת את הקורס בהצלחה.');
+      },
+      (error) => {
+        this.showMessage('❌ שגיאה בעזיבת לקורס.');
+        console.error('Leave failed', error);
+      }
+    );
   }
 
   private showMessage(message: string): void {

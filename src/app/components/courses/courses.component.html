@@ -13,8 +13,9 @@
         <p>{{ course.description }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button (click)="enroll(course.id)">Enroll</button>
-        <button mat-button (click)="leave(course.id)">Leave</button>
+        @if(!enrolledCourseIds.includes(course.id))
+      { <button mat-button (click)="enroll(course.id)">Enroll</button>}
+       @else{ <button mat-button (click)="leave(course.id)">Leave</button>}
       </mat-card-actions>
     </mat-card>
 }

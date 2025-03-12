@@ -24,22 +24,24 @@ export class CourseService {
     const headers = this.getHeaders()
     return this.http.get(`${this.apiUrl}/${courseId}`, { headers }); // ✅ Fixed
   }
-
+  getCoursesByStudentId(studentId: number|undefined): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/student/${studentId}`);
+  }
   enrollInCourse(courseId: number, userId: number): Observable<any> {
     const headers = this.getHeaders()
-    return this.http.post(`${this.apiUrl}${courseId}/enroll`, { userId }, { headers });
+    return this.http.post(`${this.apiUrl}/${courseId}/enroll`, { userId }, { headers });
   }
 
   leaveCourse(courseId: number, userId: number): Observable<any> {
     const headers = this.getHeaders()
 
-    return this.http.post(`${this.apiUrl}${courseId}/leave`, { userId }, { headers });
+    return this.http.post(`${this.apiUrl}/${courseId}/unenroll`, { userId }, { headers });
   }
 
 
   downloadMaterial(courseId: number, lessonId: number): Observable<Blob> {
     const headers = this.getHeaders().set('Accept', 'application/octet-stream'); // ✅ Added Accept header
-    return this.http.get(`${this.apiUrl}/${courseId}/lessons${lessonId}/material`, {
+    return this.http.get(`${this.apiUrl}/${courseId}/lessons/${lessonId}/material`, {
       headers,
       responseType: 'blob'
     });

@@ -1,8 +1,8 @@
 <span class="title">📚 Course Management</span>
 
 <div class="course-list">
-    @for (course of courses; track course.id)
-    {   
+    @for(course of courses;track course.id)
+   {  <ng-container>
         <mat-card class="course-card"> 
             <mat-card-header> 
                 <mat-card-title>
@@ -11,57 +11,24 @@
             </mat-card-header>
 
             <mat-card-content>
-                @if (selectedCourse?.id === course.id) {
-                    <!-- Edit Form -->
-                    <div class="edit-form">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Course Title</mat-label>
-                            <input matInput [(ngModel)]="selectedCourse.title">
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Course Description</mat-label>
-                            <textarea matInput [(ngModel)]="selectedCourse.description"></textarea>
-                        </mat-form-field>
-                    </div>
-                } @else {
-                    <!-- Course Details -->
-                    <p class="course-description">{{ course.description }}</p>
-                }
+                <p class="course-description">{{ course.description }}</p>
             </mat-card-content>
 
             <mat-card-actions>
-                @if (selectedCourse?.id === course.id) {
-                    <button mat-raised-button color="primary" (click)="saveCourse()">💾 Save</button>
-                    <button mat-button color="warn" (click)="cancelEdit()">❌ Cancel</button>
-                } @else {
-                    <button mat-button (click)="editCourse(course)">✏️ Edit</button>
-                    <button mat-button color="warn" (click)="deleteCourse(course.id)">🗑 Delete</button>
-                    <button mat-button color="accent" [routerLink]="['/lessons', course.id]">📖 View Lessons</button>
-                }
+                <button mat-button (click)="editCourse(course)">✏️ Edit</button>
+                <button mat-button color="warn" (click)="deleteCourse(course.id)">🗑 Delete</button>
+                <button mat-button color="accent" [routerLink]="['/lessons', course.id]">📖 View Lessons</button>
             </mat-card-actions>
         </mat-card>
-    }
-
-    @empty {
+    </ng-container>}
+  @empty { 
+    <ng-container >
         <p class="no-courses">No courses available.</p>
-    }
+    </ng-container>}
 </div>
 
-<!-- Add New Course Form -->
+<!-- Add New Course Button -->
 <div class="add-course-container">
     <h3>Add New Course</h3>
-    <div class="form-container">
-        <mat-form-field appearance="outline">
-            <mat-label>Course Title</mat-label>
-            <input matInput [(ngModel)]="newCourse.title">
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-            <mat-label>Course Description</mat-label>
-            <textarea matInput [(ngModel)]="newCourse.description"></textarea>
-        </mat-form-field>
-
-        <button mat-raised-button color="primary" (click)="addCourse()">➕ Add Course</button>
-    </div>
+    <button mat-raised-button color="primary" (click)="addCourse()">➕ Add Course</button>
 </div>

@@ -9,6 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from "@angular/material/input";
 import { RouterModule } from "@angular/router";
 import { CourseManagementService } from "../../services/course-management.service";
+import { MatDialog } from '@angular/material/dialog';
+import { CourseModalComponent } from '../course-modal/course-modal.component';
 
 @Component({
   selector: 'app-course-management',
@@ -23,9 +25,8 @@ import { CourseManagementService } from "../../services/course-management.servic
 export class CourseManagementComponent implements OnInit {
   courses: any[] = [];
   newCourse: any = { title: '', description: '' };
-  selectedCourse: any = null;
 
-  constructor(private courseService: CourseService, private snackBar: MatSnackBar,private courseManagementService :CourseManagementService) {}
+  constructor(private courseService: CourseService, private snackBar: MatSnackBar, private dialog: MatDialog, private courseManagementService: CourseManagementService) {}
 
   ngOnInit(): void {
     this.loadCourses();
@@ -38,37 +39,39 @@ export class CourseManagementComponent implements OnInit {
   }
 
   addCourse(): void {
-    if (!this.newCourse.title.trim() || !this.newCourse.description.trim()) {
-      this.showSnackbar("⚠️ Title and description are required!", "Close");
-      return;
-    }
+    const dialogRef = this.dialog.open(CourseModalComponent, {
+      data: { course: { ...this.newCourse } }
+    });
 
-    this.courseManagementService.addCourse(this.newCourse).subscribe(() => {
-      this.loadCourses();
-      this.showSnackbar("✅ Course added successfully!", "Close");
-      this.newCourse = { title: '', description: '' };
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.courseManagementService.addCourse(result).subscribe(() => {
+          this.loadCourses();
+          this.showSnackbar("✅ Course added successfully!", "Close");
+          this.newCourse = { title: '', description: '' };
+        });
+      }
     });
   }
 
   editCourse(course: any): void {
-    this.selectedCourse = { ...course };
-  }
-
-  saveCourse(): void {
-    if (!this.selectedCourse.title.trim() || !this.selectedCourse.description.trim()) {
-      this.showSnackbar("⚠️ Title and description cannot be empty!", "Close");
-      return;
-    }
-
-    this.courseManagementService.updateCourse(this.selectedCourse.id, this.selectedCourse).subscribe(() => {
-      this.loadCourses();
-      this.showSnackbar("✅ Course updated successfully!", "Close");
-      this.selectedCourse = null;
+    
+    const dialogRef = this.dialog.open(CourseModalComponent, {
+      data: { course: { ...course } }
     });
-  }
 
-  cancelEdit(): void {
-    this.selectedCourse = null;
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.courseManagementService.updateCourse(course.id, course).subscribe(() => {
+          this.loadCourses();
+          this.showSnackbar("✅ Course updated successfully!", "Close");
+          this.loadCourses();
+
+        });
+
+      }
+      
+    });
   }
 
   deleteCourse(courseId: number): void {
