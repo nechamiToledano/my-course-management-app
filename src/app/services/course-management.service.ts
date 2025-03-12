@@ -25,9 +25,10 @@ export class CourseManagementService {
   }
 
   updateCourse(courseId: number, course: any): Observable<any> {
-    const headers = this.getHeaders()
+    const headers = this.getHeaders();
     return this.http.put(`${this.apiUrl}/${courseId}`, course, { headers });
   }
+
 
   deleteCourse(courseId: number): Observable<any> {
     const headers = this.getHeaders()

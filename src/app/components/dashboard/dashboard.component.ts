@@ -18,12 +18,17 @@ export class DashboardComponent {
   isTeacher: boolean = false;
 
   constructor() {
+    if (typeof window !== 'undefined' && window.localStorage) {
+
     this.isLoggedIn = !!localStorage.getItem('token');
     this.isTeacher = localStorage.getItem('role') === 'teacher';
+    }
   }
 
   logout() {
-    localStorage.clear();
+    if (typeof window !== 'undefined' && window.localStorage) {
+
+    localStorage.clear();}
     window.location.reload();
     
   }

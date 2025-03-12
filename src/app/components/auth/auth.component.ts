@@ -94,10 +94,9 @@ export class AuthComponent {
   onRegister(): void {
     this.authService.register(this.authForm.value).subscribe(
       (response) => {
-        if (response && response.data) {
-          this.authService.handleAuthResponse(response);
+        if (response) {
           this.showMessage('✅ Registration successful! Redirecting...');
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/auth']);
         } else {
           this.showMessage('❌ Registration failed: Invalid response from server.');
         }

@@ -19,6 +19,7 @@ export class UserService {
     : new HttpHeaders();  }
 
   getUserId(): number | null {
+    
     const userId = localStorage.getItem('userId');
     return userId ? JSON.parse(userId) : null;
   }

@@ -31,12 +31,16 @@ export class CourseManagementComponent implements OnInit {
   ngOnInit(): void {
     this.loadCourses();
   }
-
+  
   loadCourses(): void {
     this.courseService.getCourses().subscribe((data: any[]) => {
       this.courses = data;
+    }, (error) => {
+      this.showSnackbar('Error loading courses.', 'Close');
+      console.error('Error loading courses:', error);
     });
   }
+  
 
   addCourse(): void {
     const dialogRef = this.dialog.open(CourseModalComponent, {
@@ -53,27 +57,33 @@ export class CourseManagementComponent implements OnInit {
       }
     });
   }
-
   editCourse(course: any): void {
-    
     const dialogRef = this.dialog.open(CourseModalComponent, {
       data: { course: { ...course } }
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.courseManagementService.updateCourse(course.id, course).subscribe(() => {
-          this.loadCourses();
+        // ודא שאתה שולח את הנתונים בצורה הנכונה עם המפתחות title ו-description
+        const updatedCourse = {
+          title: result.title,  // לוודא ששולחים את שם הקורס
+          description: result.description  ,
+          id:course.id
+        };
+  console.log(updatedCourse);
+  
+        this.courseManagementService.updateCourse(course.id, updatedCourse).subscribe(() => {
+          this.loadCourses();  // רענן את רשימת הקורסים לאחר העדכון
           this.showSnackbar("✅ Course updated successfully!", "Close");
-          this.loadCourses();
-
+        }, (error) => {
+          this.showSnackbar("Error updating course", "Close");
+          console.error('Error updating course:', error);
         });
-
       }
-      
     });
   }
-
+  
+  
   deleteCourse(courseId: number): void {
     this.courseManagementService.deleteCourse(courseId).subscribe(() => {
       this.loadCourses();

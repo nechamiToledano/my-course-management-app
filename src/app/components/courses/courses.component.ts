@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [
     MatToolbarModule, MatCardModule, MatFormFieldModule, MatInputModule,
-    MatOptionModule, MatSelectModule, MatButtonModule, ReactiveFormsModule, MatIconModule,MatSnackBarModule 
+    MatOptionModule, MatSelectModule, MatButtonModule, ReactiveFormsModule, MatIconModule, MatSnackBarModule
   ],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.css'
@@ -30,7 +30,7 @@ export class CoursesComponent implements OnInit {
   constructor(
     private courseService: CourseService,
     private router: Router,
-    private snackBar: MatSnackBar 
+    private snackBar: MatSnackBar
   ) {
   }
 
@@ -38,12 +38,15 @@ export class CoursesComponent implements OnInit {
     this.courseService.getCourses().subscribe((data: any[]) => {
       this.courses = data;
     });
-this.userId=localStorage.getItem('userId');
+    if (typeof window !== 'undefined' && window.localStorage) {
+
+      this.userId = localStorage.getItem('userId');
+    }
     // Fetch the courses the user is enrolled in
     this.courseService.getCoursesByStudentId(this.userId).subscribe((enrolledCourses: any[]) => {
       this.enrolledCourseIds = enrolledCourses.map(course => course.id);
     });
-    
+
   }
 
   courseDetailes(courseId: number): void {
@@ -56,7 +59,7 @@ this.userId=localStorage.getItem('userId');
       return;
     }
 
-    this.courseService.enrollInCourse(this.userId, courseId).subscribe(
+    this.courseService.enrollInCourse(courseId,this.userId).subscribe(
       () => {
         this.enrolledCourseIds.push(courseId);
         this.showMessage('✅ נרשמת בהצלחה לקורס!');
@@ -64,7 +67,7 @@ this.userId=localStorage.getItem('userId');
       (error) => {
         this.showMessage('❌ שגיאה בהרשמה לקורס.');
         console.error('Enrollment failed', error);
-        
+
       }
     );
   }
@@ -74,7 +77,7 @@ this.userId=localStorage.getItem('userId');
       this.showMessage('❌ אינך רשום לקורס זה.');
       return;
     }
-    this.courseService.leaveCourse(this.userId, courseId).subscribe(
+    this.courseService.leaveCourse(courseId,this.userId).subscribe(
       () => {
         this.enrolledCourseIds = this.enrolledCourseIds.filter(id => id !== courseId);
         this.showMessage('❌ עזבת את הקורס בהצלחה.');
@@ -89,7 +92,7 @@ this.userId=localStorage.getItem('userId');
   private showMessage(message: string): void {
     this.snackBar.open(message, 'סגור', {
       duration: 3000, // 3 שניות
-      verticalPosition: 'top', 
+      verticalPosition: 'top',
       horizontalPosition: 'center'
     });
   }

@@ -9,9 +9,11 @@ export class AuthGuard {
 
   canActivate(): boolean {
     if (isPlatformBrowser(this.platformId)) {
+      if (typeof window !== 'undefined' && window.localStorage) {
+
       const token = localStorage.getItem('token');
       return !!token;
-    }
+    }}
     return false; // Prevents SSR errors
   }
 }

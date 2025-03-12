@@ -28,15 +28,19 @@ export class CourseService {
     return this.http.get<any[]>(`${this.apiUrl}/student/${studentId}`);
   }
   enrollInCourse(courseId: number, userId: number): Observable<any> {
-    const headers = this.getHeaders()
+    console.log('User ID:', userId);  // הדפס את ה-User ID
+    const headers = this.getHeaders();
     return this.http.post(`${this.apiUrl}/${courseId}/enroll`, { userId }, { headers });
   }
+  
 
   leaveCourse(courseId: number, userId: number): Observable<any> {
     const headers = this.getHeaders()
 
-    return this.http.post(`${this.apiUrl}/${courseId}/unenroll`, { userId }, { headers });
-  }
+    return this.http.delete(`${this.apiUrl}/${courseId}/unenroll`, {
+      headers,
+      body: { userId }
+    });  }
 
 
   downloadMaterial(courseId: number, lessonId: number): Observable<Blob> {

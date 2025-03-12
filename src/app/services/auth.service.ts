@@ -13,13 +13,19 @@ export class AuthService {
   constructor(private http: HttpClient,private userService:UserService) {}
 
   setUserId(id: number): void {
-    localStorage.setItem('userId',JSON.stringify( id));
+    if (typeof window !== 'undefined' && window.localStorage) {
+
+    localStorage.setItem('userId',JSON.stringify( id));}
   }
   setToken(token: string): void {
-    localStorage.setItem('token',token);
+    if (typeof window !== 'undefined' && window.localStorage) {
+
+    localStorage.setItem('token',token);}
   }
   setRole(role: string): void {
-    localStorage.setItem('role',role);
+    if (typeof window !== 'undefined' && window.localStorage) {
+
+    localStorage.setItem('role',role);}
   }
 
 
@@ -27,18 +33,14 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, user);
   }
 
+
   login(credentials: { email: string, password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials);
   }
 
   // Use this method to handle login/register and set token after successful response
   handleAuthResponse(response: any): void {
-    console.log(response);
-    
-
-    
     if (response && response.userId&&response.token&&response.role) {
-
       this.setUserId(response.userId);
       this.setToken(response.token);
       this.setRole(response.role);
